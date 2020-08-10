@@ -1,0 +1,10 @@
+# Start from the arminc local scan image
+FROM arminc/clair-local-scan:latest #v2.0.6
+
+# Load our custom certificate for the registry
+COPY ./certs/registry-ca.crt /certs/
+RUN cat /certs/registry-ca.crt >> /etc/ssl/certs/ca-certificates.crt
+
+#COPY ./clair/clair-config.yaml /config/config.yaml
+
+CMD ["-config=/config/config.yaml"]

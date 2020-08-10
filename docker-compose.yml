@@ -1,0 +1,55 @@
+version: '3.3'
+
+services:
+  clair:
+    # image: quay.io/coreos/clair:latest
+    # image: arminc/clair-local-scan:v2.0.6
+    # command: -config=/config/config.yaml
+    build: 
+      dockerfile: clair/Dockerfile.clair
+      context: .
+    ports:
+      - "6060:6060"
+      - "6061:6061"
+    depends_on:
+      - db
+    links:
+      - "db:postgres"
+    #volumes:
+    #  - type: bind
+    #    source: $PWD/clair_config
+    #    target: /config
+    networks:
+      - clairnet
+    restart: on-failure
+  db:
+    # image: postgres:9.6
+    image: arminc/clair-db:latest   
+    networks:
+      - clairnet
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+
+  registry:
+    image: registry:2
+    hostname: registry.zdfowler.com
+    restart: always
+    volumes:
+      - ./certs:/certs
+    networks: 
+      clairnet:
+        aliases:
+          - registry.zdfowler.com
+    environment: 
+      REGISTRY_HTTP_ADDR: 0.0.0.0:5443
+      REGISTRY_HTTP_TLS_CERTIFICATE: /certs/registry.zdfowler.com.crt
+      REGISTRY_HTTP_TLS_KEY: /certs/registry.zdfowler.com.key
+        
+    ports:
+      - 5443:5443
+      - 5000:5000
+
+networks:
+  clairnet:
+    # driver: bridge
+
