@@ -1,3 +1,6 @@
 # Ignore generated log files
 logs/*.json
 logs/*.log
+docker-slim*
+.docker-slim-state
+klar
