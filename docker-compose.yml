@@ -36,6 +36,7 @@ services:
     restart: always
     volumes:
       - ./certs:/certs
+    #  - ./registry/data:/var/lib/registry
     networks: 
       clairnet:
         aliases:
