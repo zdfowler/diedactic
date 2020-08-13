@@ -4,3 +4,8 @@ LOGS=logs
 IMAGES_FILE=images.list
 LOCAL_REGISTRY=registry.zdfowler.com:5443
 CLAIR_ADDR=localhost:6060
+
+[ ! -f $IMAGES_FILE ] && echo "[ERROR] Image list '$IMAGES_FILE' does not exist." && exit 1
+[ ! -d $LOGS ] && echo "[ERROR] Logs directory does not exist." && exit 2
+[ ! -f docker-slim ] && echo "[ERROR] Docker slim binary does not exist. Run './run-install-deps.sh' first." && exit 3
+[ ! -f klar ] && echo "[ERROR] Klar binary does not exist. Run './run-install-deps.sh' first." && exit 4
