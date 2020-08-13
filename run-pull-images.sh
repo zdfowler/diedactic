@@ -1,5 +1,5 @@
 #!/bin/bash
-IMAGES_FILE=images.list
+source ./env
 
 while read image; do 
 echo "Pulling $image ... "

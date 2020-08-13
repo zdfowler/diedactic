@@ -1,8 +1,6 @@
 #!/bin/bash
 
-IMAGES_FILE=images.list
-LOCAL_REGISTRY=registry.zdfowler.com:5443
-
+source ./env
 
 while read image; do
   
