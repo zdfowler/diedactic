@@ -1,6 +1,6 @@
 #!/bin/bash
 
-IMAGES_FILE=images.short.list
+IMAGES_FILE=images.list
 LOCAL_REGISTRY=registry.zdfowler.com:5443
 
 

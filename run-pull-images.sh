@@ -1,5 +1,5 @@
 #!/bin/bash
-IMAGES_FILE=images.short.list
+IMAGES_FILE=images.list
 
 while read image; do 
 echo "Pulling $image ... "
