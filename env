@@ -1,0 +1,6 @@
+#!/bin/bash
+ 
+LOGS=logs
+IMAGES_FILE=images.list
+LOCAL_REGISTRY=registry.zdfowler.com:5443
+CLAIR_ADDR=localhost:6060
