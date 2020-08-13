@@ -9,4 +9,6 @@ while read image; do
   docker rmi $image.slim
   # remove from local
   docker rmi $image
+  # remove logs
+  rm -f logs/$image*
 done < $IMAGES_FILE
