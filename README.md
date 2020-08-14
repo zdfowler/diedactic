@@ -68,6 +68,8 @@ Alternatively, run each step as its own command:
 
 The `run-cleanup.sh` script will remove log files, and images stored in the private registry.  All slimmed images will be removed from the local docker images list.  
 
+1. `./run-cleanup.sh`
+
 Remove containers and prune images as necessary:
 
 1. `docker-compose down -v`
