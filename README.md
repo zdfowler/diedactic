@@ -70,8 +70,8 @@ The `run-cleanup.sh` script will remove log files, and images stored in the priv
 
 Remove containers and prune images as necessary:
 
-> `docker-compose down -v`
-> `docker image prune`
+1. `docker-compose down -v`
+1. `docker image prune`
 
 ## LICENSE
 
