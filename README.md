@@ -38,6 +38,8 @@ Modify values in the `env` file that match your set up as needed.
 
 The `run-*` scripts are separated by task, though each uses the `images.list` file as a driver, looping over each image name.  
 
+### Dependencies
+
 To analyze images, first install dependencies:
 
 1. `./docker-compose up` - Starts `clair` service and private registry (Use separate terminal without `-d` to monitor log output)
@@ -48,7 +50,9 @@ Create or fill the `images.list` file with at least one image name, one per line
 
 > `images.list`
 
-Once the dependencies are installed, use the runner script to do everything at once.
+### Running the Tool
+
+Once the dependencies are installed and the docker services running, use the runner script to do everything at once.
 
 > `./run.sh`
 
@@ -59,6 +63,15 @@ Alternatively, run each step as its own command:
 1. `./run-push-to-local-registry-slimmed.sh` - Pushes images and their slimmed copy into the private registry for `clair` access
 1. `./run-klar.sh` - For every image in `images.list` and its paired `.slim` image, scan the image for CVEs
 1. `./run-summarize-data.sh` - Create a CSV file with image statistics, stored as `summarized-data.csv`
+
+### Cleanup
+
+The `run-cleanup.sh` script will remove log files, and images stored in the private registry.  All slimmed images will be removed from the local docker images list.  
+
+Remove containers and prune images as necessary:
+
+> `docker-compose down -v`
+> `docker image prune`
 
 ## LICENSE
 
