@@ -1,6 +1,9 @@
 # Ignore generated log files
 logs/*.json
 logs/*.log
+# Do not commit binaries and state dirs
 docker-slim*
 .docker-slim-state
 klar
+# Do not commit the working images.list file
+images.list
