@@ -1,3 +1,5 @@
+#!/bin/bash
+
 source ./env
 
 if [[ -f summarized-data.csv ]]; then

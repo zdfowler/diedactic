@@ -32,6 +32,8 @@ The scripts used here assume the following ports are open on localhost:
 - 5000 and 5443 for local docker registry
 - 6060 and 6061 for clair services
 
+Modify values in the `env` file that match your set up as needed.
+
 ## USAGE
 
 The `run-*` scripts are separated by task, though each uses the `images.list` file as a driver, looping over each image name.  
@@ -56,13 +58,13 @@ Alternatively, run each step as its own command:
 1. `./run-slim-them.sh` - Runs `docker-slim build $image` to create slimmed image, tagged as `$image.slim`
 1. `./run-push-to-local-registry-slimmed.sh` - Pushes images and their slimmed copy into the private registry for `clair` access
 1. `./run-klar.sh` - For every image in `images.list` and its paired `.slim` image, scan the image for CVEs
-
+1. `./run-summarize-data.sh` - Create a CSV file with image statistics, stored as `summarized-data.csv`
 
 ## LICENSE
 
 diedactic: Docker Image Evaluation with Docker-slim And Clair To Identify CVEs. This tool measures the security performance of `docker-slim` by analyzing pre- and post- "slimmed" images for CVE counts via `clair`.  Given a list of images, this tool will fetch the images into a private registry for analysis, and provide comparison data on image size and number of CVE vulnerabilities.  Slimmed images are not guarunteed to be functional and should not be used for production without customization.
 
-Copyright (C) 2017 Dr. Matthew L. Hale, unless otherwise indicated.
+Copyright (C) 2020 Zac Fowler unless otherwise indicated.
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
