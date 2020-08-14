@@ -11,14 +11,15 @@ tags:
   - SAST
 authors:
   - name: Zac Fowler
-    orcid: 0000-0003-0872-7098
+    orcid: 0000-0002-6288-3270
     affiliation: 1
   - name: Matt Hale, PhD
+    orcid: 0000-0002-8433-2744
     affiliation: 2
 affiliations:
  - name: Graduate Student, Cyber Security, University of Nebraska at Omaha
    index: 1
- - name: Associate Professor, School of Interdisciplinary Informatics, University of Nebraska at Omaha
+ - name: Assistant Professor, School of Interdisciplinary Informatics, University of Nebraska at Omaha
    index: 2
 date: 14 August 2020
 bibliography: paper.bib
@@ -86,22 +87,78 @@ binaries were installed as dependencies to the project work.
 
 Using a series of scripts available at the project repository, all images from the 
 list are pulled to the server and then 'slimmed' using the `docker-slim build` 
-command.  No effort to configure or optimize the image was performed; all 
-slimming was executed using default settings to perform HTTP proving on 
-any port exposed from within the image.  
+command, which by default performs an HTTP probe for non-interactive analysis. The 
+list included 163 images as of retrieval on Aug 8, 2020, however the list soon 
+became outdated even during subsequent runs only hours later, due to the real-time 
+nature of the Docker Hub service.  No effort to configure or optimize the slimming
+process was performed; all slimming was executed using default settings to perform 
+HTTP probing on any port exposed from within the image itself.  
 
 Once slimmed, each image was pushed to the private registry for analysis by `clair`.
 The `klar` tool acts as a client to the `clair` service, avoiding the need to script
-cURL based API calls to process images.  A script then submits both the original images
-pulled from Docker Hub as well as the slimmed versions using `klar`.  The results of 
-the submission are outputted and saved as JSON and text-based log files.  Result data
-includes the name of image, final image size, number of layers processed by `clair`, 
-and counts for Unknown, Negligible, Low, Medium, and High vulnerabilities. 
+cURL based API calls to register, push, and process images.  A script then submits 
+both the original images pulled from Docker Hub as well as the slimmed versions 
+using `klar`.  The results of the submission are outputted and saved as JSON and 
+text-based log files.  Result data includes the name of image, final image size, 
+number of layers processed by `clair`, and counts for Unknown, Negligible, Low, 
+Medium, and High vulnerabilities.
+
+Data to measure how well the slimming process worked in preserving application
+functionality was not collected.  The slimming process performed in this work
+may have resulted in non-functional application containers.
+
 
 # Results
 
+Results of slimming and analysis by `klar` identified three types of vulnerability 
+reduction:
 
 
+  a) No reduction in attack surface
+  b) Reduction in attack surface
+  c) Unknown reduction in attack surface
+
+Type (b) is considered to be success, in terms of the slimming process.
+
+## No Reduction
+
+The number of CVEs present in the slimmed version equaled the number of CVEs 
+present in the original image.  No severity changes were observed (e.g., 
+if High CVEs changed to Low, etc.), indicating zero reduction in attack 
+surface as defined by open CVEs.  
+
+## Reduction
+
+The number of CVEs present in the slimmed version was less than CVEs in the 
+original image.  In most cases, not only was there a reduction in CVEs, but 
+the slimming process appeared to eliminate all CVEs from the image.  See 
+Discussion below on possible implications.
+
+## Unknown Reduction
+
+An error occurred during the default slimming operation.  No CVE measurement
+could be performed when images were not slimmed, thus producing a NULL state
+of results.
+
+# Discussion
+
+Initially, image slimming that resulted in a complete reduction of CVEs created
+doubt that the tools were functioning properly.  Expanding the list to include
+a variety of image types (middleware such as node, applications such as 
+nextcloud), eliminated that concern. The primary driver for reduction in CVEs
+during the slimming process is the construction of the image by its authors.
+Images that include an exposed port with an HTTP interface improved the ability
+for the `docker-slim` process to do its job.  However, as in the case with web
+applications such as `drupal` and `nextcloud`, the slimming process did not 
+capture full application functionality. The slimmed image often failed after
+navigating away from the application's home page or installation steps, for
+example.
+
+Images that exposed zero ports by default, such as `ubuntu` and `node` failed
+the slimming process entirely.  The slimming process has no visibility into 
+the running processes without deeper execution, and as a result a slimmed 
+version of the image could not be created by the tool.  Analysis of CVE data 
+in these cases was not possible.
 
 
 # Citations (example area)

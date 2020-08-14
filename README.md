@@ -29,7 +29,7 @@ The `certs/` directory contains a custom CA certificate and registry certificiat
 
 The scripts used here assume the following ports are open on localhost:
 
-- 5000 and 5443 for local docker registry
+- 5000 and 5443 for private docker registry
 - 6060 and 6061 for clair services
 
 Modify values in the `env` file that match your set up as needed.
