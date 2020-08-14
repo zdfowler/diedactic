@@ -75,6 +75,24 @@ Remove containers and prune images as necessary:
 1. `docker-compose down -v`
 1. `docker image prune`
 
+## TODO
+
+This project could benefit from additional work in the following areas:
+
+- Optimizing the private registry to local disk communication and storage
+- Expanding `images.list` to have more meaning with optional parameters for slimming
+  - Pass options to `docker-slim` to enable/disable the HTTP probe
+  - Specify SWAGGER/API definition to support `docker-slim` 1.31 API scanning feature
+  - Use test runners on the image for better slimming
+- Update use of `klar` to a better maintained `clair` client tool
+- Performing a file-tree analysis on slimmed results to see what differs
+
+
+## CONTRIBUTING
+
+See `CONTRIBUTING.md` for more details.
+
+
 ## LICENSE
 
 diedactic: Docker Image Evaluation with Docker-slim And Clair To Identify CVEs. This tool measures the security performance of `docker-slim` by analyzing pre- and post- "slimmed" images for CVE counts via `clair`.  Given a list of images, this tool will fetch the images into a private registry for analysis, and provide comparison data on image size and number of CVE vulnerabilities.  Slimmed images are not guarunteed to be functional and should not be used for production without customization.
