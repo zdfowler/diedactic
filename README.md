@@ -3,7 +3,7 @@ Docker Image Evaluation with Docker-slim And Clair To Identify CVEs
 
 ## Overview
 
-This tool measures the security performance of `docker-slim` by analyzing pre- and post- "slimmed" images for CVE counts via `clair`.  Given a list of images, this tool will fetch the images into a private registry for analysis.  
+This tool measures the security performance of `docker-slim` by analyzing pre- and post- "slimmed" images for CVE counts via `clair`.  Given a list of images, this tool will fetch the images into a private registry for analysis, and provide comparison data on image size and number of CVE vulnerabilities.  Slimmed images are not guarunteed to be functional and should not be used for production without customization.
 
 ## Software Requirements
 
@@ -15,10 +15,15 @@ Install these binaries in the project root directory by running `run-install-dep
 ## Hardware Requirements
 
 - Disk space equivalent to store images in private registry
+- CPU/RAM to run a private docker registry
 
 ## Environment Setup
 
-The file `images.list` contains a list of images to analyze, one per line.  
+Ensure the file `images.list` contains a list of images to analyze, one per line.  This repository offers three examples to help you get started:
+
+- `images.example-official.list` contains all "Official" named images on Docker Hub as of Aug 8, 2020.  
+- `images.example-shorter.list` contains a subset of images that represent OS layers, apps, and services
+- `images.example-short.list` is a simple, shortened list for testing purposes.
 
 The `certs/` directory contains a custom CA certificate and registry certificiate (with associated private key) signed by the custom CA to allow proper TLS connections between `clair` and the private registry.
 
@@ -53,3 +58,14 @@ Alternatively, run each step as its own command:
 1. `./run-klar.sh` - For every image in `images.list` and its paired `.slim` image, scan the image for CVEs
 
 
+## LICENSE
+
+diedactic: Docker Image Evaluation with Docker-slim And Clair To Identify CVEs. This tool measures the security performance of `docker-slim` by analyzing pre- and post- "slimmed" images for CVE counts via `clair`.  Given a list of images, this tool will fetch the images into a private registry for analysis, and provide comparison data on image size and number of CVE vulnerabilities.  Slimmed images are not guarunteed to be functional and should not be used for production without customization.
+
+Copyright (C) 2017 Dr. Matthew L. Hale, unless otherwise indicated.
+
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with this program. If not, see http://www.gnu.org/licenses/.
