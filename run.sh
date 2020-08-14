@@ -6,5 +6,5 @@ source ./env
 
 ./run-pull-images.sh 
 ./run-slim-them.sh
-./run-push-to-local-registry.sh
+./run-push-to-local-registry-slimmed.sh
 ./run-klar.sh
