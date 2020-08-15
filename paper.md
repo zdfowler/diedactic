@@ -32,30 +32,32 @@ bibliography: paper.bib
 
 # Summary
 
-This project provides an empirical analysis of reducing the attack surface
-of container-based application images using the `docker-slim` toolset.  Results
-include a categorization of outcome when using a minimally configured slimming
-operation against the ["Official" images](https://hub.docker.com/search?q=&type=image&image_filter=official) available on Docker Hub, using the `clair`
-static analysis security tool for application containers.
+This project provides an empirical analysis on reducing the attack surface
+of container-based application images using open source software (OSS) tooling.
+Results include a categorization of outcome when using a minimally configured 
+"slimming" operation against the ["Official" images](https://hub.docker.com/search?q=&type=image&image_filter=official) available on Docker 
+Hub, as measured by a static analysis security tool (SAST) for application 
+containers.
 
 Findings show that without application-specific configuration, the slimming
 operation results in one of three types of application container attack
-surface changes, as measured by reduction of CVEs:
+surface changes, measured by reduction of Common Vulnerabilites and 
+Exposures (CVEs):
 
   a) No reduction in attack surface
   b) Complete reduction in attack surface
   c) Unknown reduction in attack surface
 
 Results of this work can help container-based application distributors to
-employ practices that encourage compatibility with the `docker-slim` tooling
-to reduce or eliminate open CVE vulnerabilities present in images.
+employ practices that encourage "slimming" compatibility  so to reduce or 
+eliminate open CVE vulnerabilities present in images.
 
 # Background
 
 Using dockerized, or more broadly "containerized" solutions for software 
-development adds a new layer of technology to the underlying solution stack.  
+development adds a new layer of complexity to the underlying solution stack.  
 Namely, the base image used for a container-based application often includes
-a full-sized operating system such as `ubuntu`, `debian`, or `alpine`.  
+a full-sized operating system such as `ubuntu`, `debian`, or the smaller `alpine`.  
 Examining the security posture of dockerized applications therefore requires 
 an analysis of not only application code but also an inspection of the base 
 image on which it is built.
@@ -77,16 +79,19 @@ application container is built.
 A project environment was created to support a private registry, and a running
 instance of the `clair` SAST for containers based on `arminc`'s work for 
 localhost development.  A list of "Official" Docker Hub images was created from
-the [online listing](https://hub.docker.com/search?q=&type=image&image_filter=official).  
+the [Docker Hub image browser](https://hub.docker.com/search?q=&type=image&image_filter=official).
+Deprecated images, and images that did not have a `latest` tag were excluded from
+this work.
 
 A virtual server using 16GB of RAM and 8 CPU cores running Ubuntu Desktop 18.04 LTS
 was provisioned with `docker` and supporting developer tools.  The virtual server
 was configured to run `clair` alongside a private registry configured to accept TLS
 connections using a custom CA and service certificate.  `docker-slim` and `klar` 
-binaries were installed as dependencies to the project work.
+binaries were installed as dependencies to the project work.  The command-line
+tool `jq` was installed to process `.json` reports and log output.
 
-Using a series of scripts available at the project repository, all images from the 
-list are pulled to the server and then 'slimmed' using the `docker-slim build` 
+Using a series of scripts available at this project's repository, all images from the 
+list are pulled to the server and then "slimmed" using the `docker-slim build` 
 command, which by default performs an HTTP probe for non-interactive analysis. The 
 list included 163 images as of retrieval on Aug 8, 2020, however the list soon 
 became outdated even during subsequent runs only hours later, due to the real-time 
@@ -113,79 +118,71 @@ may have resulted in non-functional application containers.
 Results of slimming and analysis by `klar` identified three types of vulnerability 
 reduction:
 
+  a) No reduction in known CVEs
+  b) Reduction in known CVEs
+  c) Unknown reduction in CVEs
 
-  a) No reduction in attack surface
-  b) Reduction in attack surface
-  c) Unknown reduction in attack surface
+Type (b) is considered to be success, in terms of the slimming process, though there 
+is no indication the application remains fully functional without further testing.
 
-Type (b) is considered to be success, in terms of the slimming process.
+Of the 163 projects selected for inclusion, 149 were still active at the time of 
+the scans and met the inclusion criteria. Of those, 81 were slimmed, having an 
+average size reduction of 348 MB, and an average reduction of 115 CVEs.
+See [a copy of the scanning output](assets/scanning-output.csv) data here.
 
 ## No Reduction
 
-The number of CVEs present in the slimmed version equaled the number of CVEs 
-present in the original image.  No severity changes were observed (e.g., 
-if High CVEs changed to Low, etc.), indicating zero reduction in attack 
-surface as defined by open CVEs.  
+In this category, the number of CVEs present in the slimmed version equaled the
+number of CVEs present in the original image.  No severity changes were observed
+(e.g., if High CVEs changed to Low, etc.), indicating zero reduction in attack 
+surface as defined by open CVEs.
+
+Only one image, `nginx`, observed a reduction in size and no reduction in CVEs.
+The image size shrunk from 133MB to 11.1MB, while the total CVE count remained
+at 94.
 
 ## Reduction
 
 The number of CVEs present in the slimmed version was less than CVEs in the 
-original image.  In most cases, not only was there a reduction in CVEs, but 
-the slimming process appeared to eliminate all CVEs from the image.  See 
-Discussion below on possible implications.
+original image.  In all cases except for the one noted above, not only was there 
+a reduction in CVEs, but the slimming process appeared to eliminate *all* CVEs 
+from the images.  See Discussion below on possible implications.
+
 
 ## Unknown Reduction
 
-An error occurred during the default slimming operation.  No CVE measurement
-could be performed when images were not slimmed, thus producing a NULL state
-of results.
+When an error occurred during the slimming operation, no data could be derived
+about CVE reduction or measurement.  Contributing factors to a failed slimming
+process include a missing entrypoint or having no exposed ports configured.
+
+79 of the 149 apps scanned failed to produce a slimmed version and could not 
+be further measured for a reduction in vulnerabilities.
 
 # Discussion
 
-Initially, image slimming that resulted in a complete reduction of CVEs created
-doubt that the tools were functioning properly.  Expanding the list to include
-a variety of image types (middleware such as node, applications such as 
+Initially, the image slimming process that resulted in elimination of all CVEs 
+created doubt that the tools were functioning properly.  Expanding the list to 
+include a variety of image types (middleware such as node, applications such as 
 nextcloud), eliminated that concern. The primary driver for reduction in CVEs
-during the slimming process is the construction of the image by its authors.
+during the slimming process is the proper construction of the image by its authors.
 Images that include an exposed port with an HTTP interface improved the ability
 for the `docker-slim` process to do its job.  However, as in the case with web
 applications such as `drupal` and `nextcloud`, the slimming process did not 
 capture full application functionality. The slimmed image often failed after
 navigating away from the application's home page or installation steps, for
-example.
+example, without applying additional configuration options to `docker-slim`.
 
-Images that exposed zero ports by default, such as `ubuntu` and `node` failed
+Images did not expose ports by default, such as `ubuntu` and `node` failed
 the slimming process entirely.  The slimming process has no visibility into 
-the running processes without deeper execution, and as a result a slimmed 
-version of the image could not be created by the tool.  Analysis of CVE data 
-in these cases was not possible.
+the running processes without execution calls from an external trigger, and as 
+a result a slimmed version of the image could not be created by the tool.  
+Analysis of CVE data in these cases was not possible.
 
+# Conclusions
 
-# Citations (example area)
-
-Citations to entries in paper.bib should be in
-[rMarkdown](http://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html)
-format.
-
-If you want to cite a software repository URL (e.g. something on GitHub without a preferred
-citation) then you can do it with the example BibTeX entry below for @fidgit.
-
-For a quick reference, the following citation commands can be used:
-- `@author:2001`  ->  "Author et al. (2001)"
-- `[@author:2001]` -> "(Author et al., 2001)"
-- `[@author1:2001; @author2:2001]` -> "(Author1 et al., 2001; Author2 et al., 2002)"
-
-# Figures - example area
-
-Figures can be included like this:
-![Caption for example figure.\label{fig:example}](figure.png)
-and referenced from text using \autoref{fig:example}.
-
-Fenced code blocks are rendered with syntax highlighting:
-```python
-for n in range(10):
-    yield f(n)
-```	
+Docker image maintainers can take advantage of the `docker-slim` tool to 
+successfully reduce its attack surface, measured by a reduction in open CVE 
+count.  
 
 # Acknowledgements
 
