@@ -86,9 +86,9 @@ this work.
 A virtual server using 16GB of RAM and 8 CPU cores running Ubuntu Desktop 18.04 LTS
 was provisioned with `docker` and supporting developer tools.  The virtual server
 was configured to run `clair` alongside a private registry configured to accept TLS
-connections using a custom CA and service certificate.  `docker-slim` and `klar` 
+connections using a custom CA and service certificate.  `docker-slim` and `klar` [@klargithub]
 binaries were installed as dependencies to the project work.  The command-line
-tool `jq` was installed to process `.json` reports and log output.
+tool `jq` [@jq] was installed to process `.json` reports and log output.
 
 Using a series of scripts available at this project's repository, all images from the 
 list are pulled to the server and then "slimmed" using the `docker-slim build` 
