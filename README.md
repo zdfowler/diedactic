@@ -43,16 +43,16 @@ The `run-*` scripts are separated by task, though each uses the `images.list` fi
 To analyze images, first install dependencies:
 
 1. `./docker-compose up` - Starts `clair` service and private registry (Use separate terminal without `-d` to monitor log output)
-1. `./run-install-deps.sh` - Downloads `docker-slim` and `klar` binaries
+1. `./run-install-deps.sh` - Downloads `docker-slim` and `klar` binaries, and ensures `jq` is available.
 
 
-Create or fill the `images.list` file with at least one image name, one per line.
+Create or fill the `images.list` file with at least one image name, one per line. Namespaces and tags (i.e., `:7.8.1`) are not currently supported.
 
 > `images.list`
 
 ### Running the Tool
 
-Once the dependencies are installed and the docker services running, use the runner script to do everything at once.
+Once the dependencies are installed and the docker services running, use the runner script to do everything in sequence.
 
 > `./run.sh`
 

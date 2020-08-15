@@ -1,5 +1,5 @@
 # Start from the arminc local scan image
-FROM arminc/clair-local-scan:latest #v2.0.6
+FROM arminc/clair-local-scan:latest 
 
 # Load our custom certificate for the registry
 COPY ./certs/registry-ca.crt /certs/
