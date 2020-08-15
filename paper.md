@@ -62,14 +62,14 @@ Examining the security posture of dockerized applications therefore requires
 an analysis of not only application code but also an inspection of the base 
 image on which it is built.
 
-[@clairgithub] is an open-source software project for finding application container 
+`clair` [@clairgithub] is an open-source software project for finding application container 
 vulnerabilities using static analysis. The `clair` database tool creates a 
 mapping layer between CVE databases and features present in an application 
 container image.  `clair` can be integrated with a public or private 
 container registry as part of a CI/CD process or user-triggered scanning
 requirement.
 
-[@dockerslimgithub] is a project that purports to reduce security vulnerabilities 
+`docker-slim` [@dockerslimgithub] is a project that purports to reduce security vulnerabilities 
 by removing the unused components of any underlying image on which an 
 application container is built.  
 
