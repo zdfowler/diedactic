@@ -44,9 +44,9 @@ operation results in one of three types of application container attack
 surface changes, measured by reduction of Common Vulnerabilites and 
 Exposures (CVEs):
 
-  a) No reduction in attack surface
-  b) Complete reduction in attack surface
-  c) Unknown reduction in attack surface
+  1. No reduction in attack surface
+  2. Complete reduction in attack surface
+  3. Unknown reduction in attack surface
 
 Results of this work can help container-based application distributors to
 employ practices that encourage "slimming" compatibility  so to reduce or 
@@ -118,11 +118,11 @@ may have resulted in non-functional application containers.
 Results of slimming and analysis by `klar` identified three types of vulnerability 
 reduction:
 
-  a) No reduction in known CVEs
-  b) Reduction in known CVEs
-  c) Unknown reduction in CVEs
+  1. No reduction in known CVEs
+  2. Reduction in known CVEs
+  3. Unknown reduction in CVEs
 
-Type (b) is considered to be success, in terms of the slimming process, though there 
+Type (2) is considered to be success, in terms of the slimming process, though there 
 is no indication the application remains fully functional without further testing.
 
 Of the 163 projects selected for inclusion, 149 were still active at the time of 
