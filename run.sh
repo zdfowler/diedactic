@@ -6,7 +6,7 @@ source ./env
 
 ./run-pull-images.sh 
 ./run-slim-them.sh
-./run-push-to-local-registry-slimmed.sh
+./run-push-to-local-registry-orig-and-slim.sh
 ./run-klar.sh
 
 # Create output data
