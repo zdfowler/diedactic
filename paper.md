@@ -32,11 +32,10 @@ bibliography: paper.bib
 
 # Summary
 
-This project provides an empirical analysis on reducing the attack surface
-of container-based application images using open source software (OSS) tooling.
-Results include a categorization of outcome when using a minimally configured 
-"slimming" operation against the ["Official" images](https://hub.docker.com/search?q=&type=image&image_filter=official) available on Docker 
-Hub, as measured by a static analysis security tool (SAST) for application 
+Diedactic is an empirical analysis tool that can assist with reducing the attack surface
+of container-based application images. Diedactic brings together two open source software (OSS) tools, namely `clair` [@clairgithub] and `docker-slim` [@dockerslimgithub], and provides new utilities for sliming and analyzing resulting images. This paper demonstrates the use of Diedactic using a case study. For the case study, a minimally configured 
+"slimming" operation was applied to the ["Official" images](https://hub.docker.com/search?q=&type=image&image_filter=official) available on Docker 
+Hub. Diedactic uses a static analysis security tool (SAST) to measure the effects of attack surface reduction for application 
 containers.
 
 Findings show that without application-specific configuration, the slimming
@@ -48,9 +47,9 @@ Exposures (CVEs):
   2. Complete reduction in attack surface
   3. Unknown reduction in attack surface
 
-Results of this work can help container-based application distributors to
-employ practices that encourage "slimming" compatibility  so to reduce or 
-eliminate open CVE vulnerabilities present in images.
+Diedactic along with the results of the case study can help container-based application distributors to
+employ practices that encourage "slimming" compatibility for reducing or 
+eliminating open CVE vulnerabilities present in images.
 
 # Background
 
@@ -74,7 +73,7 @@ by removing the unused components of any underlying image on which an
 application container is built.  
 
 
-# Methods
+# Case Study Methodology
 
 A project environment was created to support a private registry, and a running
 instance of the `clair` SAST for containers based on `arminc`'s work for 
@@ -182,7 +181,7 @@ Analysis of CVE data in these cases was not possible.
 
 Docker image maintainers can take advantage of the `docker-slim` tool to 
 successfully reduce its attack surface, measured by a reduction in open CVE 
-count.  
+count. Diedactic automates the analysis process, allowing developers and image maintainers to slim their images, analyze them for CVEs, and generate a mitigation-oriented report to direct future development and maintenance work.
 
 # Acknowledgements
 
