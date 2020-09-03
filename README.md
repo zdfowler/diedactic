@@ -5,21 +5,30 @@ Docker Image Evaluation with Docker-slim And Clair To Identify CVEs
 
 This tool measures the security performance of `docker-slim` by analyzing pre- and post- "slimmed" images for CVE counts via `clair`.  Given a list of images, this tool will fetch the images into a private registry for analysis, and provide comparison data on image size and number of CVE vulnerabilities.  Slimmed images are not guarunteed to be functional and should not be used for production without customization and verification.
 
-## Software Requirements
+## Requirements
+### Software
+Diedactic makes use of the following tools/libraries. With the exception of docker, an install script will automatically fetch and configure these tools.
 
+- Docker - https://docs.docker.com/get-docker/
 - Docker-slim - https://github.com/docker-slim/docker-slim - binary preferred over running as a containerized command
 - Klar - https://github.com/optiopay/klar - client runner for Clair (binary)
 - jQ - https://stedolan.github.io/jq/ - CLI-based JSON processor
 
-Install these binaries in the project root directory by running `run-install-deps.sh`
-
-## Hardware Requirements
+### Hardware
+You will need the following to use diedactic
 
 - Disk space equivalent to store images in private registry
 - CPU/RAM to run a private docker registry
 
-## Environment Setup
 
+## Installation
+Clone the repository
+```
+git clone https://github.com/zdfowler/diedactic.git
+cd diedactic
+```
+
+### Environment Setup
 Ensure the file `images.list` contains a list of images to analyze, one per line.  This repository offers three examples to help you get started:
 
 - `images.example-official.list` contains all "Official" named images on Docker Hub as of Aug 8, 2020.  
@@ -37,18 +46,18 @@ The scripts used here assume the following ports are open on localhost:
 
 Modify values in the `env` file that match your set up as needed.
 
+### Dependencies
+Install dependencies:
+1. Install [docker](https://docs.docker.com/get-docker/) if you haven't.
+1. Navigate to the diedactic repository root 
+1. `./docker-compose up` - Starts `clair` service and private registry (Use separate terminal without `-d` to monitor log output)
+1. `./run-install-deps.sh` - Downloads `docker-slim` and `klar` binaries, and ensures `jq` is available.
+
 ## USAGE
 
 The `run-*` scripts are separated by task, though each uses the `images.list` file as a driver, looping over each image name.  
 
-### Dependencies
-
-To analyze images, first install dependencies:
-
-1. `./docker-compose up` - Starts `clair` service and private registry (Use separate terminal without `-d` to monitor log output)
-1. `./run-install-deps.sh` - Downloads `docker-slim` and `klar` binaries, and ensures `jq` is available.
-
-
+### Configuring images
 Create or fill the `images.list` file with at least one image name, one per line. Namespaces and tags (i.e., `:7.8.1`) are not currently supported.
 
 > `images.list`
